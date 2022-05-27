@@ -1,3 +1,11 @@
+/*
+* This Main class just starts the entire game. It keeps things organised.
+*
+* @author  Anthony Chen
+* @version 1.0
+* @since   2022-05-27
+*/
+
 /* Main class starts the game
 All it does is run the constructor in GameFrame class
 

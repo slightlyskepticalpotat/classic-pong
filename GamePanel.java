@@ -1,3 +1,13 @@
+/*
+* This GamePanel class acts as the main game loop, continuously running
+* the game, listening to keyboard input, updating the graphics, and
+* checking if any win conditions are met. It uses threading to multitask.
+*
+* @author  Anthony Chen
+* @version 1.0
+* @since   2022-05-27
+*/
+
 /* GamePanel class acts as the main "game loop" - continuously runs the game and calls whatever needs to be called
 
 Child of JPanel because JPanel contains methods for drawing to the screen
@@ -7,6 +17,7 @@ Implements KeyListener interface to listen for keyboard input
 Implements Runnable interface to use "threading" - let the game do two things at once
 
 */
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -72,11 +83,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         System.out.println("Player 2 gets super paddle!");
       }
     }
-    if (scoreOne == 16) {
+    if (scoreOne == 12) {
       System.out.println("Player 1 wins!");
       oneWin = true;
 
-    } else if (scoreTwo == 16) {
+    } else if (scoreTwo == 12) {
       System.out.println("Player 2 wins!");
       twoWin = true;
     }

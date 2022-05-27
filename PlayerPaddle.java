@@ -1,3 +1,13 @@
+/*
+* This PlayerPaddle class defines any player paddles, and how they move.
+* With minor changes, more PlayerPaddle objects could be created to create
+* four-player pong, make the paddles move freely, or something else.
+*
+* @author  Anthony Chen
+* @version 1.0
+* @since   2022-05-27
+*/
+
 import java.awt.*;
 import java.awt.event.*;
 

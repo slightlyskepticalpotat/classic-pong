@@ -1,8 +1,18 @@
+/*
+* This GameFrame class sets up the initial window for the game,
+* being a child of JFrame because JFrame manages frames. It also
+* Runs the constructor in GamePanel class to create a GamePanel.
+*
+* @author  Anthony Chen
+* @version 1.0
+* @since   2022-05-27
+*/
+
 /* GameFrame class establishes the frame (window) for the game
 It is a child of JFrame because JFrame manages frames
 Runs the constructor in GamePanel class
-
 */
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -25,6 +35,6 @@ public class GameFrame extends JFrame{
     System.out.println("Player 2 uses K and M");
     System.out.println("Player 1 on the left, 2 on the right");
     System.out.println("First to 8 gets super paddle");
-    System.out.println("First to 16 wins!");
+    System.out.println("First to 12 wins!");
   }
 }
