@@ -44,8 +44,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
   public GamePanel(){
     ball = new PlayerBall(GAME_WIDTH/2, GAME_HEIGHT/2, getRandomSpeed() * 2, getRandomSpeed()); // create a player controlled ball, set start location to middle of screen
-    paddleOne = new PlayerPaddle(8, 224, 'w', 's'); // creates two player paddles with controls
-    paddleTwo = new PlayerPaddle(1008, 224, 'k', 'm');
+    paddleOne = new PlayerPaddle(0, 224, 'w', 's'); // creates two player paddles with controls
+    paddleTwo = new PlayerPaddle(1016, 224, 'k', 'm');
 
     this.setFocusable(true); // make everything in this class appear on the screen
     this.addKeyListener(this); // start listening for keyboard input
@@ -67,12 +67,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     graphics.drawString(scoreTwo + "", 542, 64);
     if (scoreOne >= 8 && scoreTwo < 8) { // give players super paddle
       if (paddleOne.speed == 8) { // speeds up paddle
-        paddleOne.speed = 12;
+        paddleOne.speed = 16;
         System.out.println("Player 1 gets super paddle!");
       }
     } else if (scoreTwo >= 8 && scoreOne < 8) {
       if (paddleTwo.speed == 8) { // speeds up other paddle
-        paddleTwo.speed = 12;
+        paddleTwo.speed = 16;
         System.out.println("Player 2 gets super paddle!");
       }
     }
