@@ -14,6 +14,6 @@ This is a common technique among coders to keep things organized (and handy when
 
 class Main {
   public static void main(String[] args) {
-    new GameFrame();
+    new GameFrame(); // creates new instance of gameframe
   }
 }

@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener{
 
-  //dimensions of window
+  // dimensions of window
   public static final int GAME_WIDTH = 1024;
   public static final int GAME_HEIGHT = 512;
 
@@ -43,47 +43,40 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   public boolean twoWin;
 
   public GamePanel(){
-    ball = new PlayerBall(GAME_WIDTH/2, GAME_HEIGHT/2, getRandomSpeed(), getRandomSpeed()); //create a player controlled ball, set start location to middle of screen
-    paddleOne = new PlayerPaddle(8, 224, 'w', 's');
+    ball = new PlayerBall(GAME_WIDTH/2, GAME_HEIGHT/2, getRandomSpeed() * 2, getRandomSpeed()); // create a player controlled ball, set start location to middle of screen
+    paddleOne = new PlayerPaddle(8, 224, 'w', 's'); // creates two player paddles with controls
     paddleTwo = new PlayerPaddle(1008, 224, 'k', 'm');
 
-    this.setFocusable(true); //make everything in this class appear on the screen
-    this.addKeyListener(this); //start listening for keyboard input
+    this.setFocusable(true); // make everything in this class appear on the screen
+    this.addKeyListener(this); // start listening for keyboard input
+    this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT)); // set window size
 
-    // method stub temporarily left empty
-    addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-
-			}
-		});
-    this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
-
-    //make this class run at the same time as other classes (without this each class would "pause" while another class runs). By using threading we can remove lag, and also allows us to do features like display timers in real time!
+    // make this class run at the same time as other classes (without this each class would "pause" while another class runs). By using threading we can remove lag, and also allows us to do features like display timers in real time!
     gameThread = new Thread(this);
     gameThread.start();
   }
 
-  //paint is a method in java.awt library that we are overriding. It is a special method - it is called automatically in the background in order to update what appears in the window. You NEVER call paint() yourself
+  // paint is a method in java.awt library that we are overriding. It is a special method - it is called automatically in the background in order to update what appears in the window. You NEVER call paint() yourself
   public void paint(Graphics g){
-    //we are using "double buffering here" - if we draw images directly onto the screen, it takes time and the human eye can actually notice flashes of lag as each pixel on the screen is drawn one at a time. Instead, we are going to draw images OFF the screen, then simply move the image on screen as needed.
-    image = createImage(GAME_WIDTH, GAME_HEIGHT); //draw off screen
-    graphics = image.getGraphics();
+    // we are using "double buffering here" - if we draw images directly onto the screen, it takes time and the human eye can actually notice flashes of lag as each pixel on the screen is drawn one at a time. Instead, we are going to draw images OFF the screen, then simply move the image on screen as needed.
+    image = createImage(GAME_WIDTH, GAME_HEIGHT); // draw off screen
+    graphics = image.getGraphics(); // draw scores with custom font
     graphics.setFont(new Font("Roboto", Font.PLAIN, 64));
     graphics.setColor(Color.white);
     graphics.drawString(scoreOne + "", 402, 64);
     graphics.drawString(scoreTwo + "", 542, 64);
     if (scoreOne >= 8 && scoreTwo < 8) { // give players super paddle
-      if (paddleOne.speed == 8) {
+      if (paddleOne.speed == 8) { // speeds up paddle
         paddleOne.speed = 12;
         System.out.println("Player 1 gets super paddle!");
       }
     } else if (scoreTwo >= 8 && scoreOne < 8) {
-      if (paddleTwo.speed == 8) {
+      if (paddleTwo.speed == 8) { // speeds up other paddle
         paddleTwo.speed = 12;
         System.out.println("Player 2 gets super paddle!");
       }
     }
-    if (scoreOne == 12) {
+    if (scoreOne == 12) { // check if player one or two wins
       System.out.println("Player 1 wins!");
       oneWin = true;
 
@@ -91,46 +84,46 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
       System.out.println("Player 2 wins!");
       twoWin = true;
     }
-    if (oneWin) {
-      image = createImage(GAME_WIDTH, GAME_HEIGHT); //draw off screen
+    if (oneWin) { // show winning message for either player
+      image = createImage(GAME_WIDTH, GAME_HEIGHT); // draw off screen
       graphics = image.getGraphics();
       graphics.setFont(new Font("Roboto", Font.PLAIN, 64));
       graphics.setColor(Color.white);
       graphics.drawString("Player 1 wins!", 32, 64);
     } else if (twoWin) {
-      image = createImage(GAME_WIDTH, GAME_HEIGHT); //draw off screen
+      image = createImage(GAME_WIDTH, GAME_HEIGHT); // draw off screen
       graphics = image.getGraphics();
       graphics.setFont(new Font("Roboto", Font.PLAIN, 64));
       graphics.setColor(Color.white);
       graphics.drawString("Player 2 wins!", 32, 64);
     }
-    draw(graphics);//update the positions of everything on the screen
-    g.drawImage(image, 0, 0, this); //move the image on the screen
+    draw(graphics); // update the positions of everything on the screen
+    g.drawImage(image, 0, 0, this); // move the image on the screen
   }
 
-  //call the draw methods in each class to update positions as things move
+  // call the draw methods in each class to update positions as things move
   public void draw(Graphics g){
-    for (int i = 0; i < 512; i += 16) { // draw central line
+    for (int i = 0; i < 512; i += 16) { // draw central line of squares
       g.setColor(Color.white);
       g.fillRect(508, i, 8, 8);
     }
-    ball.draw(g);
+    ball.draw(g); // draw balls and paddles
     paddleOne.draw(g);
     paddleTwo.draw(g);
   }
 
-  //call the move methods in other classes to update positions
-  //this method is constantly called from run(). By doing this, movements appear fluid and natural. If we take this out the movements appear sluggish and laggy
+  // call the move methods in other classes to update positions
+  // this method is constantly called from run(). By doing this, movements appear fluid and natural. If we take this out the movements appear sluggish and laggy
   public void move(){
     ball.move();
     paddleOne.move();
     paddleTwo.move();
   }
 
-  //handles all collision detection and responds accordingly
+  // handles all collision detection and responds accordingly
   public void checkCollision(){
 
-    //force player to remain on screen
+    // bounce ball off top and bottom of screen
     if(ball.y <= 0){
       ball.y = 0;
       ball.yVelocity = -ball.yVelocity;
@@ -139,16 +132,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
       ball.y = GAME_HEIGHT - PlayerBall.BALL_DIAMETER;
       ball.yVelocity = -ball.yVelocity;
     }
+    // increase score if ball gets past paddle
     if(ball.x <= 0){
       scoreTwo += 1;
-      ball = new PlayerBall(GAME_WIDTH/2, GAME_HEIGHT/2, PlayerBall.speed, getRandomSpeed()); //create a player controlled ball, set start location to middle of screen
+      ball = new PlayerBall(GAME_WIDTH/2, GAME_HEIGHT/2, PlayerBall.speed, getRandomSpeed()); // re-create a ball since someone just scored
     }
     if(ball.x + PlayerBall.BALL_DIAMETER >= GAME_WIDTH){
       scoreOne += 1;
-      ball = new PlayerBall(GAME_WIDTH/2, GAME_HEIGHT/2, -PlayerBall.speed, getRandomSpeed()); //create a player controlled ball, set start location to middle of screen
+      ball = new PlayerBall(GAME_WIDTH/2, GAME_HEIGHT/2, -PlayerBall.speed, getRandomSpeed()); // re-create a ball since someone just scored
     }
 
-    if (paddleOne.y <= 0) {
+    if (paddleOne.y <= 0) { // stop paddles from moving off screen
       paddleOne.y = 0;
     }
     if (paddleOne.y >= 448) {
@@ -161,7 +155,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
       paddleTwo.y = 448;
     }
 
-    if (ball.intersects(paddleOne)) {
+    if (ball.intersects(paddleOne)) { // bounce balls off paddle
       ball.xVelocity = -ball.xVelocity;
     }
     if (ball.intersects(paddleTwo)) {
@@ -169,27 +163,27 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     }
   }
 
-  //run() method is what makes the game continue running without end. It calls other methods to move objects,  check for collision, and update the screen
+  // run() method is what makes the game continue running without end. It calls other methods to move objects,  check for collision, and update the screen
   public void run(){
-    //the CPU runs our game code too quickly - we need to slow it down! The following lines of code "force" the computer to get stuck in a loop for short intervals between calling other methods to update the screen.
+    // the CPU runs our game code too quickly - we need to slow it down! The following lines of code "force" the computer to get stuck in a loop for short intervals between calling other methods to update the screen.
     long lastTime = System.nanoTime();
     double amountOfTicks = 60;
     double ns = 1000000000/amountOfTicks;
     double delta = 0;
     long now;
 
-    while(true){ //this is the infinite game loop
+    while(true){ // this is the infinite game loop
       now = System.nanoTime();
       delta = delta + (now-lastTime)/ns;
       lastTime = now;
 
-      //only move objects around and update screen if enough time has passed
+      // only move objects around and update screen if enough time has passed
       if(delta >= 1){
         move();
         checkCollision();
         repaint();
         delta--;
-        if (oneWin || twoWin) {
+        if (oneWin || twoWin) { // pause the game for a long time if someone wins
           try {
             TimeUnit.SECONDS.sleep(86400);
           } catch (InterruptedException e) {
@@ -200,7 +194,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     }
   }
 
-  // method stubs temporarily left empty
+  // pass key events to paddles
   public void keyPressed(KeyEvent e){
     paddleOne.keyPressed(e);
     paddleTwo.keyPressed(e);
@@ -211,10 +205,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     paddleTwo.keyReleased(e);
   }
 
+  // we have to include keytyped
   public void keyTyped(KeyEvent e){
 
   }
 
+  // method to get random speed and direction that's not zero
   public int getRandomSpeed() {
     int result = 0;
     while (result == 0) {

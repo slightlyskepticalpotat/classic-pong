@@ -12,12 +12,12 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class PlayerPaddle extends Rectangle{
-    public int direction;
-    public int speed = 8;
-    public char keyOne;
+    public int direction; // direction of paddle
+    public int speed = 8; // speed of paddle
+    public char keyOne; // two keys that control paddle
     public char keyTwo;
 
-    // constructor creates a paddle at a given location
+    // constructor creates a paddle at a given location with given controls
     public PlayerPaddle(int x, int y, char kO, char kT){
         super(x, y, 8, 64);
         keyOne = kO;
@@ -42,6 +42,7 @@ public class PlayerPaddle extends Rectangle{
         }
     }
 
+    // stops paddle moving when key released
     public void keyReleased(KeyEvent e){
         if(e.getKeyChar() == keyOne || e.getKeyChar() == keyTwo){
           direction = 0;
@@ -49,8 +50,8 @@ public class PlayerPaddle extends Rectangle{
         }
     }
 
-    //called frequently from the GamePanel class
-    //draws the current location of the paddle to the screen
+    // called frequently from the GamePanel class
+    // draws the current location of the paddle to the screen
     public void draw(Graphics g){
         g.setColor(Color.white);
         g.fillRect(x, y, 8, 64);

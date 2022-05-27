@@ -21,27 +21,25 @@ public class PlayerBall extends Rectangle{
 
   public int xVelocity;
   public int yVelocity;
-  public static final int speed = 8; //movement speed of ball
-  public static final int BALL_DIAMETER = 10; //size of ball
+  public static final int speed = 8; // max horizontal or vertical speed of ball
+  public static final int BALL_DIAMETER = 10; // size of ball
 
-  // constructor creates ball at given location with movement
+  // constructor creates ball at given location with given velocity
   public PlayerBall(int x, int y, int xV, int yV){
     super(x, y, BALL_DIAMETER, BALL_DIAMETER);
     xVelocity = xV;
     yVelocity = yV;
   }
 
-  // original code to control ball removed since ball moves by itself
-
-  //called frequently from both PlayerBall class and GamePanel class
-  //updates the current location of the ball
+  // called frequently from both PlayerBall class and GamePanel class
+  // updates the current location of the ball
   public void move(){
     y = y + yVelocity;
     x = x + xVelocity;
   }
 
-  //called frequently from the GamePanel class
-  //draws the current location of the ball to the screen
+  // called frequently from the GamePanel class
+  // draws the current location of the ball to the screen
   public void draw(Graphics g){
     g.setColor(Color.white);
     g.fillRect(x, y, BALL_DIAMETER, BALL_DIAMETER);
