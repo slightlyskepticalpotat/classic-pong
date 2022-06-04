@@ -133,7 +133,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
       ball.yVelocity = -ball.yVelocity;
     }
     // increase score if ball gets past paddle
-    if(ball.x <= 0){
+    if(ball.x <= -8){ // add offset to properly track score
       scoreTwo += 1;
       ball = new PlayerBall(GAME_WIDTH/2, GAME_HEIGHT/2, PlayerBall.speed, getRandomSpeed()); // re-create a ball since someone just scored
     }
